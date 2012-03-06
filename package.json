@@ -1,0 +1,25 @@
+{ "name": "priority_queue"
+, "version": "0.1.0"
+, "description": "simple priority queue using a binary heap"
+, "main": "./priority_queue.js"
+, "scripts":
+  { "test": "node priority_queue.js" }
+, "devDependencies": 
+  { "vows": "*" }
+, "repository":
+  { "type": "git"
+  , "url":  "http://github.com/agnat/js_priority_queue.git"
+  }
+, "bugs": { "url": "http://github.com/agnat/js_priority_queue/issues" }
+, "licenses": [
+    { "type": "MIT"
+    , "url": "http://github.com/agnat/js_priority_queue/raw/master/LICENSE"
+    }
+  ]
+, "author":
+  { "name":   "David Siegel"
+  , "email":  "david@artcom.de"
+  , "github": "agnat"
+  }
+}
+
