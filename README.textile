@@ -1,6 +1,6 @@
 h1. Priority Queue
 
-A simple javascript priority queue using a binary heap. The compare function has the same semantic as with the @Array.sort()@ function.
+A simple javascript priority queue using a binary heap. A compare function is used to sort the elements. The compare function has the same semantic like the ones used with @Array.sort()@.
 
 h2. Synopsis
 
