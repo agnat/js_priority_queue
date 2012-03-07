@@ -1,7 +1,3 @@
-var max_first = exports.max_first = function max_first(a, b) { return a - b; }
-  , min_first = exports.min_first = function min_first(a, b) { return b - a; }
-  ;
-
 exports.PriorityQueue = function PriorityQueue(compare, queue) {
   if (!(this instanceof PriorityQueue)) return new PriorityQueue(compare, queue);
 
@@ -30,6 +26,7 @@ exports.PriorityQueue = function PriorityQueue(compare, queue) {
         swap(j, parent(j));
       }
     }
+    return queue.length;
   }
 
   function remove(i) {
@@ -50,4 +47,8 @@ exports.PriorityQueue = function PriorityQueue(compare, queue) {
 function left(i)   { return 2 * i + 1 }
 function right(i)  { return 2 * i + 2 }
 function parent(i) { return Math.floor((i + 1) / 2) - 1 }
+
+var max_first = exports.max_first = function max_first(a, b) { return a - b; }
+  , min_first = exports.min_first = function min_first(a, b) { return b - a; }
+  ;
 
