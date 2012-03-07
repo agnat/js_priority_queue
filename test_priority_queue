@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var pq = require('./priority_queue')
   , assert  = require('assert')
   , vows    = require('vows')
@@ -19,7 +21,7 @@ var suite = vows.describe('priority queue').addBatch(
   , 'both agree on the element order': function(r) {
       assert.deepEqual(r.heap.result, r.naive.result);
     }
-  , 'the heap version is more than two times faster': function(r) {
+  , 'the heap version is more than ten times faster': function(r) {
       //console.log('heap time:', r.heap.time, 'naive time:', r.naive.time);
       assert.isTrue(10 * r.heap.time < r.naive.time);
     }
@@ -56,14 +58,6 @@ function pqueueWithItems() {
   }
 }
 
-var NaiveQueue = function NaiveQueue(cmp, a) {
-  cmp =  cmp || pq.min_first;
-  a   = (a   || []).sort(cmp);
-  this.push = function push() { a.push.apply(a, arguments); a.sort(cmp); }
-  this.pop  = function pop()  { return a.pop(); }
-  this.__defineGetter__('length', function length() { return a.length });
-}
-
 function queueTest() {
   var items = Array.prototype.slice.call(arguments)
     , cmp = (typeof items[items.length - 1] === 'function') ? items.pop() : undefined
@@ -80,14 +74,13 @@ function queueTest() {
   ctx['returns the items in order'] = function(qs) {
     while (qs.q.length) {
       assert.strictEqual(qs.q.length, qs.nq.length);
-      assert.strictEqual(qs.q.pop(), qs.nq.pop());
+      assert.strictEqual(qs.q.shift(), qs.nq.shift());
     }
   }
   return ctx;
 }
 
-for (var i = 0; i < 100; ++i) { numbers.push(Math.random()); }
-
+numbers = random_numbers(100);
 
 function queue_time(queue_type, bc, puc, poc, els, popped) {
   var start = Date.now();
@@ -96,9 +89,9 @@ function queue_time(queue_type, bc, puc, poc, els, popped) {
     for (var j = 0; j < puc; ++j) {
       q.push(els[i * bc + j]);
     }
-    for (var j = 0; j < poc; ++j) { popped.push(q.pop()); }
+    for (var j = 0; j < poc; ++j) { popped.push(q.shift()); }
   }
-  while (q.length > 0) { popped.push(q.pop()); }
+  while (q.length > 0) { popped.push(q.shift()); }
   return Date.now() - start;
 }
 
@@ -106,6 +99,14 @@ function random_numbers(n) {
   var r = [], i;
   for (i = 0; i < n; ++i) { r.push(Math.random() * 2000 - 1000) }
   return r;
+}
+
+var NaiveQueue = function NaiveQueue(cmp, a) {
+  cmp =  cmp || pq.min_first;
+  a   = (a   || []).sort(cmp);
+  this.push = function push() { a.push.apply(a, arguments); a.sort(cmp); }
+  this.shift  = function shift()  { return a.shift(); }
+  this.__defineGetter__('length', function length() { return a.length });
 }
 
 function compare_queues() {
