@@ -17,7 +17,6 @@ while (q.length > 0) {
   console.log(q.pop());
 }
 
-
 h2. License
 
 MIT.
