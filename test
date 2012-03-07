@@ -1,0 +1,61 @@
+var pq = require('./priority_queue')
+  , assert  = require('assert')
+  , vows    = require('vows')
+  , numbers = []
+  , PriorityQueue = pq.PriorityQueue
+  ;
+for (var i = 0; i < 100; ++i) {
+  numbers.push(Math.random());
+}
+
+var NaiveQueue = function NaiveQueue(cmp, a) {
+  this.push = function push() { a.push.apply(a, arguments); a.sort(); }
+  this.pop  = function pop()  { return a.pop(); }
+}
+
+var suite = vows.describe('priority queue').addBatch(
+{ 'A new priority queue': 
+  { topic: PriorityQueue
+  , 'is a PriorityQueue instance': isPriorityQueue
+  , 'is empty': function(q) { assert.strictEqual(q.length, 0) }
+  }
+, 'A filled priority queue': queueTest(42, 5, 23)
+, 'An inverted priority queue': queueTest(42, 5, 23, pq.min_first)
+, 'A longer priority queue': queueTest.apply(null, numbers)
+});
+suite.reporter = require('vows/lib/vows/reporters/spec');
+suite.run();
+
+function isPriorityQueue(q) {
+  assert.instanceOf(q, PriorityQueue);
+}
+
+function pqueueWithItems() {
+  var items = arguments;
+  return function() {
+    var q = new PriorityQueue();
+    q.push.apply(q, items);
+    return q;
+  }
+}
+
+function queueTest() {
+  var items = Array.prototype.slice.call(arguments)
+    , cmp = (typeof items[items.length - 1] === 'function') ? items.pop() : pq.max_first
+    , sorted = items.sort(cmp)
+    , ctx = {}
+    ;
+  ctx.topic = function() {
+    var q = new PriorityQueue(cmp);
+    q.push.apply(q, items);
+    return q;
+  }
+  ctx['returns the items in order'] = function(q) {
+    while (sorted.length) {
+      assert.strictEqual(q.length, sorted.length);
+      assert.strictEqual(q.pop(), sorted.pop());
+    }
+  }
+  return ctx;
+}
+
