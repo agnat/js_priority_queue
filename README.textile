@@ -1,21 +1,65 @@
 h1. Priority Queue
 
-A simple javascript priority queue using a binary heap. A compare function is used to sort the elements. The compare function has the same semantic like the ones used with @Array.sort()@.
+A simple javascript priority queue using a binary heap. A compare function is used to sort the elements. The queue works in CommonJS and browser environments.
 
 h2. Synopsis
 
 bc.. var pq = require('priority_queue');
 
 // create a queue
-var q = new pq.PriorityQueue(/* compare, array */);
+var q = new pq.PriorityQueue();
 
 // push some elements
 q.push(42, 5, 23, Math.PI);
 
-// pop
+// shift 'em out ...
 while (q.length > 0) {
-  console.log(q.pop());
+  console.log(q.shift());
 }
+
+h2. Installation
+
+bc. npm install priority_queue
+
+To use the queue in a web page add
+
+bc. <script src='/scripts/priority_queue.js' type='text/javascript'></script>
+
+The module is exported as @agnat_priority_queue@.
+
+h2. Documentation
+
+h3. pq.PriorityQueue(compare, queue)
+
+Construct a new priority queue. @compare@ is a function with the same semantics as the "compare functions":https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort used with @Array.sort()@. It defaults to a simple numeric comparison with ascending order.
+
+An initial queue array may be passed in using the @queue@ argument. Note that the content of the array will be modified.
+
+The constructor may be called with or without operator @new@.
+
+h3. queue.push(element, ...)
+
+Add new elements to the queue. Returns the new length.
+
+h3. queue.shift()
+
+Remove the item with maximum priority from the queue and return it.
+
+h3. queue.length
+
+The current length of the queue.
+
+h3. Compare Functions
+
+Two compare functions are included. They are not very useful because they only compare numbers. However, they are used in testing and provide a starting point to implement your own.
+
+h4. pq.min_first
+
+Return items with minimum priority first
+
+h4. pq.max_first
+
+Return items with maximum priority first
 
 h2. License
 
