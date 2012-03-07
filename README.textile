@@ -13,9 +13,13 @@ var q = new pq.PriorityQueue(/* compare, array */);
 q.push(42, 5, 23, Math.PI);
 
 // pop
-while (q.length) {
+while (q.length > 0) {
   console.log(q.pop());
 }
 
-<!-- vim: set linebreak spell spelllang=en_us : -->
 
+h2. License
+
+MIT.
+
+<!-- vim: set linebreak spell spelllang=en_us : -->
