@@ -1,0 +1,4 @@
+h1. Priority Queue
+
+A simple javascript priority queue using a binary heap.
+
