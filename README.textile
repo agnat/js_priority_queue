@@ -1,4 +1,21 @@
 h1. Priority Queue
 
-A simple javascript priority queue using a binary heap.
+A simple javascript priority queue using a binary heap. The compare function has the same semantic as with the @Array.sort()@ function.
+
+h2. Synopsis
+
+bc.. var pq = require('priority_queue');
+
+// create a queue
+var q = new pq.PriorityQueue(/* compare, array */);
+
+// push some elements
+q.push(42, 5, 23, Math.PI);
+
+// pop
+while (q.length) {
+  console.log(q.pop());
+}
+
+<!-- vim: set linebreak spell spelllang=en_us : -->
 
