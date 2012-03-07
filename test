@@ -4,15 +4,6 @@ var pq = require('./priority_queue')
   , numbers = []
   , PriorityQueue = pq.PriorityQueue
   ;
-for (var i = 0; i < 100; ++i) {
-  numbers.push(Math.random());
-}
-
-var NaiveQueue = function NaiveQueue(cmp, a) {
-  this.push = function push() { a.push.apply(a, arguments); a.sort(); }
-  this.pop  = function pop()  { return a.pop(); }
-}
-
 var suite = vows.describe('priority queue').addBatch(
 { 'A new priority queue': 
   { topic: PriorityQueue
@@ -20,7 +11,7 @@ var suite = vows.describe('priority queue').addBatch(
   , 'is empty': function(q) { assert.strictEqual(q.length, 0) }
   }
 , 'A filled priority queue': queueTest(42, 5, 23)
-, 'An inverted priority queue': queueTest(42, 5, 23, pq.min_first)
+, 'An inverted priority queue': queueTest(42, 5, 23, Math.PI, pq.min_first)
 , 'A longer priority queue': queueTest.apply(null, numbers)
 });
 suite.reporter = require('vows/lib/vows/reporters/spec');
@@ -39,23 +30,36 @@ function pqueueWithItems() {
   }
 }
 
+var NaiveQueue = function NaiveQueue(cmp, a) {
+  cmp =  cmp || pq.min_first;
+  a   = (a   || []).sort(cmp);
+  this.push = function push() { a.push.apply(a, arguments); a.sort(cmp); }
+  this.pop  = function pop()  { return a.pop(); }
+  this.__defineGetter__('length', function length() { return a.length });
+}
+
 function queueTest() {
   var items = Array.prototype.slice.call(arguments)
-    , cmp = (typeof items[items.length - 1] === 'function') ? items.pop() : pq.max_first
-    , sorted = items.sort(cmp)
+    , cmp = (typeof items[items.length - 1] === 'function') ? items.pop() : undefined
     , ctx = {}
     ;
   ctx.topic = function() {
-    var q = new PriorityQueue(cmp);
+    var q = new PriorityQueue(cmp)
+      , nq = new NaiveQueue(cmp);
+
     q.push.apply(q, items);
-    return q;
+    nq.push.apply(q, items);
+    return {q: q, nq: nq};
   }
-  ctx['returns the items in order'] = function(q) {
-    while (sorted.length) {
-      assert.strictEqual(q.length, sorted.length);
-      assert.strictEqual(q.pop(), sorted.pop());
+  ctx['returns the items in order'] = function(qs) {
+    while (qs.q.length) {
+      assert.strictEqual(qs.q.length, qs.nq.length);
+      assert.strictEqual(qs.q.pop(), qs.nq.pop());
     }
   }
   return ctx;
 }
 
+for (var i = 0; i < 100; ++i) { numbers.push(Math.random()); }
+
+// vim: set filetype=javascript :
