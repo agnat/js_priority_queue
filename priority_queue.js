@@ -44,7 +44,7 @@ exports.PriorityQueue = function PriorityQueue(compare, queue) {
   this.shift = function shift() { return remove(0); }
   this.__defineGetter__('length', function length() { return queue.length });
 
-  for (var i = queue.length / 2 - 1; i >= 0; --i) { heapify(i) }
+  for (var i = parent(queue.length - 1); i >= 0; --i) { heapify(i) }
 }
 
 function left(i)   { return 2 * i + 1 }
