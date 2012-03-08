@@ -3,7 +3,7 @@
 , "description": "simple priority queue using a binary heap"
 , "main": "./priority_queue.js"
 , "scripts":
-  { "test": "node test" }
+  { "test": "vows --spec" }
 , "devDependencies": 
   { "vows": "*" }
 , "repository":
