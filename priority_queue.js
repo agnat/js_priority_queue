@@ -1,4 +1,6 @@
-var agnat_priority_queue = (function(exports) { // namespace
+var agnat_priority_queue = (function() { // namespace
+
+var exports = exports || {}
 
 exports.PriorityQueue = function PriorityQueue(compare, queue) {
   if (!(this instanceof PriorityQueue)) return new PriorityQueue(compare, queue);
@@ -55,4 +57,4 @@ var max_first = exports.max_first = function max_first(a, b) { return b - a }
   , min_first = exports.min_first = function min_first(a, b) { return a - b }
   ;
 
-return exports; })(exports || {}); // end of namespace 
+return exports; })(); // end of namespace 
