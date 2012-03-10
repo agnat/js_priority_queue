@@ -1,6 +1,6 @@
 var agnat_priority_queue = (function() { // namespace
 
-var exports = exports || {}
+var exports = (typeof module !== 'undefined' && module.exports) ? module.exports : {};
 
 exports.PriorityQueue = function PriorityQueue(compare, queue) {
   if (!(this instanceof PriorityQueue)) return new PriorityQueue(compare, queue);
