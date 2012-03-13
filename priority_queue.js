@@ -1,6 +1,7 @@
-var agnat_priority_queue = (function() { // namespace
+(function() { // namespace
 
-var exports = (typeof module !== 'undefined' && module.exports) ? module.exports : {};
+var exports = (typeof module !== 'undefined' && module.exports) ?
+    module.exports : window.priority_queue = {};
 
 exports.PriorityQueue = function PriorityQueue(compare, queue) {
   if (!(this instanceof PriorityQueue)) return new PriorityQueue(compare, queue);
@@ -36,7 +37,7 @@ exports.PriorityQueue = function PriorityQueue(compare, queue) {
     queue.push.apply(queue, arguments);
     for (; i < e; ++i) {
       j = i; p = parent(i);
-      for(; j >= 0 && compare(queue[j], queue[p]) < 0; j = p, p = parent(j)) {
+      for (; j > 0 && compare(queue[j], queue[p]) < 0; j = p, p = parent(j)) {
         swap(j, p);
       }
     }
@@ -57,4 +58,4 @@ var max_first = exports.max_first = function max_first(a, b) { return b - a }
   , min_first = exports.min_first = function min_first(a, b) { return a - b }
   ;
 
-return exports; })(); // end of namespace 
+})(); // end of namespace 
