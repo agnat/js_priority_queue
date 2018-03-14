@@ -1,5 +1,5 @@
 { "name": "priority_queue"
-, "version": "0.1.3"
+, "version": "0.1.4"
 , "description": "simple priority queue using a binary heap"
 , "main": "./priority_queue.js"
 , "scripts":

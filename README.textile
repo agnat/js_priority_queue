@@ -41,6 +41,14 @@ h3. queue.push(element, ...)
 
 Add new elements to the queue. Returns the new length.
 
+h3. queue.pull(element)
+
+Pull any element instead of maximum priority out of the queue and return it.
+
+h3. queue.top()
+
+Peek the item with maximum priority from the queue and return its value.
+
 h3. queue.shift()
 
 Remove the item with maximum priority from the queue and return it.
