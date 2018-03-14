@@ -15,7 +15,10 @@ var suite = vows.describe('priority queue').addBatch(
   , 'with five items pushed':
     { topic: push(2, 1, 3, Math.PI, 0)
     , 'obeys the heap property': assertHeap
-    , 'has a length of five': hasLength(5) 
+    , 'has a length of five': hasLength(5)
+    , 'has the minimum on the top': topReturns(0)
+    , 'has one valid item pulled': pullItem(3)
+    , 'has a length of four': hasLength(4)
     , 'returns its items in ascending order': assertOrdering(asc)
     , 'is empty': hasLength(0)
     , 'holds while pushing and shifting 1000 random values': pushAndShift(1000, asc, 0)
@@ -31,6 +34,9 @@ var suite = vows.describe('priority queue').addBatch(
     { topic: push(2, 1, 3, Math.PI, 0)
     , 'obeys the heap property': assertHeap
     , 'has a length of five': hasLength(5) 
+    , 'has the maxinum on the top': topReturns(Math.PI)
+    , 'has one invalid item pulled': pullItem(-1)
+    , 'has a length of four': hasLength(5)
     , 'returns its items in descending order': assertOrdering(desc)
     , 'is empty': hasLength(0)
     , 'holds while pushing and shifting 1000 random values': pushAndShift(1000, desc, 0)
@@ -40,6 +46,9 @@ var suite = vows.describe('priority queue').addBatch(
 , 'A queue with initial data':
   { topic: makeQueue(pq.min_first, [1, 4, 2, 23, 0, -99])
   , 'has a length of six': hasLength(6)
+  , 'has the mininum on the top': topReturns(-99)
+  , 'has one valid item pulled': pullItem(23)
+  , 'has a length of five': hasLength(5)
   , 'obeys the heap property': assertHeap
   , 'and five items pushed':
     { topic: push(2, 1, 3, Math.PI, 0)
@@ -55,6 +64,11 @@ function hasLength(n) {
   return function(t) {
     assert.strictEqual(t.queue.length, n) 
     assert.strictEqual(t.store.length, n) 
+  }
+}
+function topReturns(v) {
+  return function(t) {
+    assert.deepEqual(t.queue.top(), v)
   }
 }
 function shiftReturns(v) {
@@ -74,6 +88,13 @@ function assertHeap(t) {
 function push(/* element, ... */) {
   var elements = Array.prototype.slice.call(arguments);
   return function (t) { t.queue.push.apply(t.queue, elements); return t }
+}
+
+function pullItem(v) {
+  return function(t) {
+    t.queue.pull(v);
+    assertHeap(t);
+  }
 }
 
 function makeQueue(compare, initital_data) {

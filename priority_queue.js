@@ -25,7 +25,7 @@ exports.PriorityQueue = function PriorityQueue(compare, queue) {
 
   function remove(i) {
     var t = queue[i], b = queue.pop();
-    if (queue.length > 0) {
+    if (queue.length > 0 && i < queue.length) {
       queue[i] = b;
       heapify(i);
     }
@@ -44,6 +44,13 @@ exports.PriorityQueue = function PriorityQueue(compare, queue) {
     return queue.length;
   }
 
+  this.pull = function (v) {
+    var i = 0;
+    while (i < queue.length && queue[i] !== v) { i++; }
+    return (i === queue.length) ? undefined : remove(i);
+  }
+
+  this.top   = function top() { return queue[0]; }
   this.shift = function shift() { return remove(0); }
   this.__defineGetter__('length', function length() { return queue.length });
 
